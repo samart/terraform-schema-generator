@@ -140,7 +140,7 @@ func main() {
 	fmt.Printf("✅ Conversion successful\n")
 	fmt.Printf("   - Schema type: %s\n", schema.Type)
 	fmt.Printf("   - Properties: %d\n", len(schema.Properties))
-	fmt.Printf("   - Required fields: %d\n\n", len(schema.Required))
+	fmt.Printf("   - Required fields: %d\n", len(schema.Required))
 
 	// Step 4: Validate the schema
 	fmt.Println("✓ Step 4: Validating generated schema...")
@@ -150,10 +150,10 @@ func main() {
 		log.Fatalf("❌ Schema validation failed: %v", err)
 	}
 
-	fmt.Println("✅ Schema is valid!\n")
+	fmt.Println("✅ Schema is valid!")
 
 	// Step 5: Output the schema
-	fmt.Println("📄 Step 5: Generating JSON Schema output...\n")
+	fmt.Println("📄 Step 5: Generating JSON Schema output...")
 
 	schemaJSON, err := c.ToJSON(schema)
 	if err != nil {
@@ -172,7 +172,7 @@ func main() {
 		log.Fatalf("❌ Failed to write schema to file: %v", err)
 	}
 
-	fmt.Printf("✅ Schema saved to: %s\n", outputFile)
+	fmt.Printf("✅ Schema saved to: %s\n\n", outputFile)
 
 	// Display usage information
 	fmt.Println("\n🎯 Usage Information:")
