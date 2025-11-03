@@ -7,7 +7,7 @@ A Go library for parsing Terraform configurations and generating JSON Schema Dra
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-197%20passing-success?style=flat&logo=go)](pkg/)
-[![Coverage](https://img.shields.io/badge/coverage-73.2%25-brightgreen?style=flat&logo=codecov)](pkg/)
+[![Coverage](https://img.shields.io/badge/coverage-69.1%25-yellowgreen?style=flat&logo=codecov)](pkg/)
 [![Go Report Card](https://img.shields.io/badge/go%20report-A+-brightgreen?style=flat&logo=go)](https://goreportcard.com)
 
 ## Overview
@@ -617,7 +617,7 @@ Generate CRD validation schemas from Terraform modules.
 
 ## Testing
 
-The library includes comprehensive test coverage (128 test cases):
+The library includes comprehensive test coverage (197 test cases across all packages):
 
 ```bash
 # Run all tests
@@ -633,13 +633,13 @@ go test -v ./pkg/validator
 ```
 
 **Test Coverage:**
-- CLI: 87.3% (21 tests)
+- CLI: 87.3% (25 tests)
 - Parser: 63.3% (33 tests)
-- Converter: 78.7% (50 tests)
-- Validator: 43.9% (13 tests)
-- Generator: 73.6% (14 tests)
-- Integration: Real-world module testing (66 tests)
-- YAML Examples: End-to-end validation
+- Converter: 78.7% (59 tests)
+- Validator: 43.9% (16 tests)
+- Generator: 73.6% (29 tests)
+- Integration: Real-world module testing (35 tests)
+- Overall: 69.1% coverage across all production code
 
 ## API Reference
 
@@ -864,22 +864,23 @@ Suitable for real-time API validation and CI/CD pipelines.
 
 | Package | Tests | Coverage | Status |
 |---------|-------|----------|--------|
-| **CLI** | 21 | 87.3% | ✅ |
+| **CLI** | 25 | 87.3% | ✅ |
 | **Parser** | 33 | 63.3% | ✅ |
-| **Converter** | 50 | 78.7% | ✅ |
-| **Generator** | 14 | 73.6% | ✅ |
-| **Validator** | 13 | 43.9% | ✅ |
-| **Integration** | 66 | N/A | ✅ |
-| **Total** | **197** | **73.2%** | ✅ |
+| **Converter** | 59 | 78.7% | ✅ |
+| **Generator** | 29 | 73.6% | ✅ |
+| **Validator** | 16 | 43.9% | ✅ |
+| **Integration** | 35 | N/A | ✅ |
+| **Total** | **197** | **69.1%** | ✅ |
 
 ### Quick Stats
 
 ```
 Total Tests:        197 (all passing)
 Total Packages:     6
-Code Coverage:      73.2% average
-Lines of Code:      ~3,500
-Test-to-Code Ratio: 1:1.2
+Code Coverage:      69.1% average
+Production Code:    ~1,300 lines
+Test Code:          ~4,100 lines
+Test-to-Code Ratio: 3.2:1
 Build Time:         ~2.5s
 Test Time:          ~3.2s
 ```
