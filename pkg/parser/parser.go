@@ -18,23 +18,25 @@ type Variable struct {
 	Default     interface{}            `json:"default,omitempty"`
 	Required    bool                   `json:"required"`
 	Sensitive   bool                   `json:"sensitive,omitempty"`
-	Validation  []ValidationRule       `json:"validation,omitempty"`
+	Nullable    bool                   `json:"nullable,omitempty"`
+	Ephemeral   bool                   `json:"ephemeral,omitempty"`
+	Validations []Validation           `json:"validations,omitempty"`
 	Metadata    map[string]interface{} `json:"metadata,omitempty"`
 }
 
-// ValidationRule represents a Terraform variable validation block
-type ValidationRule struct {
+// Validation represents a Terraform variable validation block
+type Validation struct {
 	Condition    string `json:"condition"`
 	ErrorMessage string `json:"error_message"`
 }
 
 // Output represents a Terraform output definition
 type Output struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description,omitempty"`
-	Value       string      `json:"value,omitempty"`
-	Sensitive   bool        `json:"sensitive,omitempty"`
-	DependsOn   []string    `json:"depends_on,omitempty"`
+	Name        string   `json:"name"`
+	Description string   `json:"description,omitempty"`
+	Value       string   `json:"value,omitempty"`
+	Sensitive   bool     `json:"sensitive,omitempty"`
+	DependsOn   []string `json:"depends_on,omitempty"`
 }
 
 // Provider represents a Terraform provider requirement
@@ -60,13 +62,13 @@ type Module struct {
 
 // ParseResult contains the parsed Terraform variables
 type ParseResult struct {
-	Variables          []Variable `json:"variables"`
-	Outputs            []Output   `json:"outputs,omitempty"`
-	Providers          []Provider `json:"providers,omitempty"`
-	Resources          []Resource `json:"resources,omitempty"`
-	Modules            []Module   `json:"modules,omitempty"`
-	TerraformVersion   string     `json:"terraform_version,omitempty"`
-	Errors             []string   `json:"errors,omitempty"`
+	Variables        []Variable `json:"variables"`
+	Outputs          []Output   `json:"outputs,omitempty"`
+	Providers        []Provider `json:"providers,omitempty"`
+	Resources        []Resource `json:"resources,omitempty"`
+	Modules          []Module   `json:"modules,omitempty"`
+	TerraformVersion string     `json:"terraform_version,omitempty"`
+	Errors           []string   `json:"errors,omitempty"`
 }
 
 // Parser handles parsing of Terraform files
@@ -163,7 +165,7 @@ func (p *Parser) extractVariables(file *hcl.File) ([]Variable, error) {
 
 		// Extract variable attributes
 		if typeAttr, exists := block.Body.Attributes["type"]; exists {
-			variable.Type = p.extractTypeString(typeAttr.Expr)
+			variable.Type = p.extractTypeString(typeAttr.Expr, file.Bytes)
 		}
 
 		if descAttr, exists := block.Body.Attributes["description"]; exists {
@@ -185,10 +187,25 @@ func (p *Parser) extractVariables(file *hcl.File) ([]Variable, error) {
 			}
 		}
 
+		if nullableAttr, exists := block.Body.Attributes["nullable"]; exists {
+			if val, diags := nullableAttr.Expr.Value(nil); !diags.HasErrors() {
+				variable.Nullable = val.True()
+			}
+		} else {
+			// Default value for nullable is true according to Terraform spec
+			variable.Nullable = true
+		}
+
+		if ephemeralAttr, exists := block.Body.Attributes["ephemeral"]; exists {
+			if val, diags := ephemeralAttr.Expr.Value(nil); !diags.HasErrors() {
+				variable.Ephemeral = val.True()
+			}
+		}
+
 		// Extract validation blocks
 		for _, validationBlock := range block.Body.Blocks {
 			if validationBlock.Type == "validation" {
-				rule := ValidationRule{}
+				rule := Validation{}
 
 				if condAttr, exists := validationBlock.Body.Attributes["condition"]; exists {
 					rule.Condition = string(condAttr.Expr.Range().SliceBytes(file.Bytes))
@@ -200,7 +217,7 @@ func (p *Parser) extractVariables(file *hcl.File) ([]Variable, error) {
 					}
 				}
 
-				variable.Validation = append(variable.Validation, rule)
+				variable.Validations = append(variable.Validations, rule)
 			}
 		}
 
@@ -211,7 +228,7 @@ func (p *Parser) extractVariables(file *hcl.File) ([]Variable, error) {
 }
 
 // extractTypeString extracts the type as a string from an expression
-func (p *Parser) extractTypeString(expr hclsyntax.Expression) string {
+func (p *Parser) extractTypeString(expr hclsyntax.Expression, fileBytes []byte) string {
 	// Handle simple type references like string, number, bool
 	if traversal, ok := expr.(*hclsyntax.ScopeTraversalExpr); ok {
 		parts := []string{}
@@ -223,13 +240,19 @@ func (p *Parser) extractTypeString(expr hclsyntax.Expression) string {
 		return strings.Join(parts, ".")
 	}
 
-	// Handle complex types like list(string), map(number), object({...})
-	if funcCall, ok := expr.(*hclsyntax.FunctionCallExpr); ok {
-		return funcCall.Name
+	// For complex types like list(string), map(number), object({...}),
+	// including those with optional() modifiers, return the full expression
+	// This preserves the complete type constraint including optional() calls
+	typeStr := strings.TrimSpace(string(expr.Range().SliceBytes(fileBytes)))
+
+	// If we got an empty string, try to extract just the function name as fallback
+	if typeStr == "" {
+		if funcCall, ok := expr.(*hclsyntax.FunctionCallExpr); ok {
+			return funcCall.Name
+		}
 	}
 
-	// Fallback: return the raw syntax
-	return strings.TrimSpace(string(expr.Range().SliceBytes([]byte{})))
+	return typeStr
 }
 
 // convertCtyValue converts a cty.Value to a native Go type

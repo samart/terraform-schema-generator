@@ -77,7 +77,7 @@ output "load_balancer_dns" {
 `
 
 func main() {
-	fmt.Println("🚀 Terraform Schema Generator - Example Usage\n")
+	fmt.Println("🚀 Terraform Schema Generator - Example Usage")
 
 	// Step 1: Create parser
 	fmt.Println("📋 Step 1: Creating parser...")
@@ -188,8 +188,8 @@ func main() {
 	// Display example validation usage
 	fmt.Println("📚 Example: Using the schema for validation")
 	fmt.Println("───────────────────────────────────────────────")
-	fmt.Println(`
-// In your application:
+	//nolint:govet
+	fmt.Print(`// In your application:
 import "encoding/json"
 import "github.com/xeipuuv/gojsonschema"
 
@@ -214,7 +214,7 @@ if result.Valid() {
     fmt.Println("✅ Variables are valid!")
 } else {
     for _, desc := range result.Errors() {
-        fmt.Printf("❌ %s\n", desc)
+        fmt.Println("❌", desc)
     }
 }
 `)

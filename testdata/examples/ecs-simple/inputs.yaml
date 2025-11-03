@@ -1,0 +1,20 @@
+# ECS Cluster - Simple Example
+# Simplified inputs for terraform-aws-ecs module
+
+create: true
+cluster_name: "my-ecs-cluster"
+region: "us-east-1"
+
+tags:
+  Environment: "production"
+  Terraform: "true"
+
+cluster_setting:
+  - name: "containerInsights"
+    value: "enabled"
+
+create_cloudwatch_log_group: true
+cloudwatch_log_group_retention_in_days: 90
+
+create_task_exec_iam_role: true
+task_exec_iam_role_name: "ecs-task-exec-role"

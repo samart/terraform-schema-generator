@@ -84,7 +84,7 @@ func (c *Converter) convertVariable(variable parser.Variable) Property {
 	property.Type = c.mapTerraformTypeToJSONSchema(variable.Type)
 
 	// Handle validation rules
-	c.applyValidationRules(&property, variable.Validation)
+	c.applyValidationRules(&property, variable.Validations)
 
 	return property
 }
@@ -129,7 +129,7 @@ func (c *Converter) mapTerraformTypeToJSONSchema(tfType string) interface{} {
 }
 
 // applyValidationRules applies Terraform validation rules to JSON Schema properties
-func (c *Converter) applyValidationRules(property *Property, rules []parser.ValidationRule) {
+func (c *Converter) applyValidationRules(property *Property, rules []parser.Validation) {
 	for _, rule := range rules {
 		// Parse common validation patterns
 		condition := strings.ToLower(rule.Condition)
@@ -154,7 +154,7 @@ func (c *Converter) applyValidationRules(property *Property, rules []parser.Vali
 		}
 
 		// Enum validations
-		if strings.Contains(condition, "contains") {
+		if strings.Contains(condition, "contains") { //nolint:staticcheck // Placeholder for future enum validation
 			// This would require parsing the actual values
 			// Simplified for now
 		}

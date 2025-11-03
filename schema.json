@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Terraform Variables Schema",
+  "description": "Generated JSON Schema from Terraform variable definitions",
+  "type": "object",
+  "properties": {
+    "environment": {
+      "type": "string",
+      "description": "Environment name (dev, staging, prod)"
+    },
+    "instance_type": {
+      "type": "string",
+      "description": "EC2 instance type",
+      "default": {}
+    },
+    "server_config": {
+      "type": "object",
+      "description": "Server configuration with optional attributes"
+    },
+    "tags": {
+      "type": "object",
+      "description": "Resource tags",
+      "default": {}
+    },
+    "vpc_id": {
+      "type": "string",
+      "description": "VPC ID for deployment"
+    }
+  },
+  "required": [
+    "environment",
+    "vpc_id",
+    "server_config"
+  ]
+}

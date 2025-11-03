@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Terraform Variables Schema",
+  "description": "Generated JSON Schema from Terraform variable definitions",
+  "type": "object",
+  "properties": {
+    "autoscaling_capacity_providers": {
+      "type": "object",
+      "description": "Map of autoscaling capacity provider definitions to create for the cluster",
+      "default": {}
+    },
+    "cloudwatch_log_group_class": {
+      "type": "string",
+      "description": "Specified the log class of the log group. Possible values are: `STANDARD` or `INFREQUENT_ACCESS`",
+      "default": {}
+    },
+    "cloudwatch_log_group_kms_key_id": {
+      "type": "string",
+      "description": "If a KMS Key ARN is set, this key will be used to encrypt the corresponding log group. Please be sure that the KMS Key has an appropriate key policy (https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)",
+      "default": {}
+    },
+    "cloudwatch_log_group_name": {
+      "type": "string",
+      "description": "Custom name of CloudWatch Log Group for ECS cluster",
+      "default": {}
+    },
+    "cloudwatch_log_group_retention_in_days": {
+      "type": "number",
+      "description": "Number of days to retain log events",
+      "default": {}
+    },
+    "cloudwatch_log_group_tags": {
+      "type": "object",
+      "description": "A map of additional tags to add to the log group created",
+      "default": {}
+    },
+    "cluster_configuration": {
+      "type": "object",
+      "description": "The execute command configuration for the cluster",
+      "default": {}
+    },
+    "cluster_name": {
+      "type": "string",
+      "description": "Name of the cluster (up to 255 letters, numbers, hyphens, and underscores)",
+      "default": {}
+    },
+    "cluster_service_connect_defaults": {
+      "type": "object",
+      "description": "Configures a default Service Connect namespace",
+      "default": {}
+    },
+    "cluster_setting": {
+      "type": "array",
+      "description": "List of configuration block(s) with cluster settings. For example, this can be used to enable CloudWatch Container Insights for a cluster",
+      "default": {}
+    },
+    "cluster_tags": {
+      "type": "object",
+      "description": "A map of additional tags to add to the cluster",
+      "default": {}
+    },
+    "create": {
+      "type": "boolean",
+      "description": "Determines whether resources will be created (affects all resources)",
+      "default": {}
+    },
+    "create_cloudwatch_log_group": {
+      "type": "boolean",
+      "description": "Determines whether a log group is created by this module for the cluster logs. If not, AWS will automatically create one if logging is enabled",
+      "default": {}
+    },
+    "create_task_exec_iam_role": {
+      "type": "boolean",
+      "description": "Determines whether the ECS task definition IAM role should be created",
+      "default": {}
+    },
+    "create_task_exec_policy": {
+      "type": "boolean",
+      "description": "Determines whether the ECS task definition IAM policy should be created. This includes permissions included in AmazonECSTaskExecutionRolePolicy as well as access to secrets and SSM parameters",
+      "default": {}
+    },
+    "default_capacity_provider_strategy": {
+      "type": "object",
+      "description": "Map of default capacity provider strategy definitions to use for the cluster",
+      "default": {}
+    },
+    "region": {
+      "type": "string",
+      "description": "Region where the resource(s) will be managed. Defaults to the Region set in the provider configuration",
+      "default": {}
+    },
+    "services": {
+      "type": "object",
+      "description": "Map of service definitions to create",
+      "default": {}
+    },
+    "tags": {
+      "type": "object",
+      "description": "A map of tags to add to all resources",
+      "default": {}
+    },
+    "task_exec_iam_role_description": {
+      "type": "string",
+      "description": "Description of the role",
+      "default": {}
+    },
+    "task_exec_iam_role_name": {
+      "type": "string",
+      "description": "Name to use on IAM role created",
+      "default": {}
+    },
+    "task_exec_iam_role_path": {
+      "type": "string",
+      "description": "IAM role path",
+      "default": {}
+    },
+    "task_exec_iam_role_permissions_boundary": {
+      "type": "string",
+      "description": "ARN of the policy that is used to set the permissions boundary for the IAM role",
+      "default": {}
+    },
+    "task_exec_iam_role_policies": {
+      "type": "object",
+      "description": "Map of IAM role policy ARNs to attach to the IAM role",
+      "default": {}
+    },
+    "task_exec_iam_role_tags": {
+      "type": "object",
+      "description": "A map of additional tags to add to the IAM role created",
+      "default": {}
+    },
+    "task_exec_iam_role_use_name_prefix": {
+      "type": "boolean",
+      "description": "Determines whether the IAM role name (`task_exec_iam_role_name`) is used as a prefix",
+      "default": {}
+    },
+    "task_exec_iam_statements": {
+      "type": "object",
+      "description": "A map of IAM policy [statements](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document#statement) for custom permission usage",
+      "default": {}
+    },
+    "task_exec_secret_arns": {
+      "type": "array",
+      "description": "List of SecretsManager secret ARNs the task execution role will be permitted to get/read",
+      "default": {}
+    },
+    "task_exec_ssm_param_arns": {
+      "type": "array",
+      "description": "List of SSM parameter ARNs the task execution role will be permitted to get/read",
+      "default": {}
+    }
+  }
+}

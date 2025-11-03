@@ -1,0 +1,35 @@
+# DynamoDB Table - Basic Example
+# Extracted from: terraform-aws-dynamodb-table/examples/basic/main.tf
+
+name: "my-table-test"
+hash_key: "id"
+range_key: "title"
+table_class: "STANDARD"
+deletion_protection_enabled: false
+
+attributes:
+  - name: "id"
+    type: "N"
+  - name: "title"
+    type: "S"
+  - name: "age"
+    type: "N"
+
+global_secondary_indexes:
+  - name: "TitleIndex"
+    hash_key: "title"
+    range_key: "age"
+    projection_type: "INCLUDE"
+    non_key_attributes:
+      - "id"
+    on_demand_throughput:
+      max_write_request_units: 1
+      max_read_request_units: 1
+
+on_demand_throughput:
+  max_read_request_units: 1
+  max_write_request_units: 1
+
+tags:
+  Terraform: "true"
+  Environment: "staging"

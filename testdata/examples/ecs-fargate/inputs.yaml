@@ -1,0 +1,144 @@
+# ECS Fargate - Complex Example
+# Extracted from: terraform-aws-ecs/examples/fargate/main.tf
+# Demonstrates advanced ECS features including blue/green deployments,
+# multiple containers, and CloudWatch logging
+
+create: true
+cluster_name: "ecs-fargate-example"
+region: "us-east-1"
+
+# Cluster settings with Container Insights
+cluster_setting:
+  - name: "containerInsights"
+    value: "enabled"
+
+# Capacity provider strategy for Fargate
+default_capacity_provider_strategy:
+  FARGATE:
+    weight: 50
+    base: 20
+  FARGATE_SPOT:
+    weight: 50
+
+# CloudWatch Log Group configuration
+create_cloudwatch_log_group: true
+cloudwatch_log_group_retention_in_days: 90
+cloudwatch_log_group_class: "STANDARD"
+
+# Task execution IAM role
+create_task_exec_iam_role: true
+task_exec_iam_role_name: "ecs-task-exec-role"
+task_exec_iam_role_use_name_prefix: true
+
+# Services configuration
+services:
+  frontend:
+    create: true
+    create_service: true
+
+    # Service configuration
+    cpu: 1024
+    memory: 4096
+    enable_execute_command: true
+    desired_count: 2
+
+    # Blue/Green deployment
+    deployment_configuration:
+      strategy: "BLUE_GREEN"
+      bake_time_in_minutes: 2
+
+    deployment_maximum_percent: 200
+    deployment_minimum_healthy_percent: 100
+
+    # Network configuration
+    assign_public_ip: true
+    subnet_ids:
+      - "subnet-12345678"
+      - "subnet-87654321"
+    security_group_ids:
+      - "sg-12345678"
+
+    # Container definitions
+    container_definitions:
+      fluent-bit:
+        cpu: 512
+        memory: 1024
+        essential: true
+        image: "public.ecr.aws/aws-observability/aws-for-fluent-bit:latest"
+        firelensConfiguration:
+          type: "fluentbit"
+        memoryReservation: 50
+        user: "0"
+        enable_cloudwatch_logging: true
+        create_cloudwatch_log_group: true
+        cloudwatch_log_group_retention_in_days: 7
+
+      ecsdemo-frontend:
+        cpu: 512
+        memory: 1024
+        essential: true
+        image: "public.ecr.aws/aws-containers/ecsdemo-frontend:776fd50"
+
+        portMappings:
+          - name: "ecsdemo-frontend"
+            containerPort: 3000
+            hostPort: 3000
+            protocol: "tcp"
+
+        readonlyRootFilesystem: false
+
+        dependsOn:
+          - containerName: "fluent-bit"
+            condition: "START"
+
+        enable_cloudwatch_logging: false
+
+        logConfiguration:
+          logDriver: "awsfirelens"
+          options:
+            Name: "firehose"
+            region: "us-east-1"
+            delivery_stream: "my-stream"
+            log-driver-buffer-limit: "2097152"
+
+        linuxParameters:
+          capabilities:
+            add: []
+            drop:
+              - "NET_RAW"
+
+        restartPolicy:
+          enabled: true
+          ignoredExitCodes:
+            - 1
+          restartAttemptPeriod: 60
+
+        volumesFrom:
+          - sourceContainer: "fluent-bit"
+            readOnly: false
+
+    # Load balancer configuration
+    load_balancer:
+      frontend:
+        container_name: "ecsdemo-frontend"
+        container_port: 3000
+        target_group_arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/ecs-frontend/1234567890abcdef"
+
+    # Task IAM roles
+    create_tasks_iam_role: true
+    tasks_iam_role_name: "ecs-task-role"
+    tasks_iam_role_use_name_prefix: true
+
+    # Service tags
+    service_tags:
+      Service: "frontend"
+      ManagedBy: "Terraform"
+
+    tags:
+      Environment: "production"
+      Application: "ecsdemo"
+
+tags:
+  Terraform: "true"
+  ManagedBy: "terraform-aws-ecs"
+  Environment: "production"

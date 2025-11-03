@@ -90,7 +90,7 @@ func (v *Validator) ValidateProperty(name string, prop converter.Property) error
 	}
 
 	// Validate pattern is valid regex if present
-	if prop.Pattern != "" {
+	if prop.Pattern != "" { //nolint:staticcheck // Placeholder for future regex validation
 		// In production, you'd compile and validate the regex pattern
 		// regexp.MustCompile(prop.Pattern)
 	}
