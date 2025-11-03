@@ -1,5 +1,5 @@
 # Ensure README is treated as text, not binary
-README.md text eol=lf
+README.md text eol=lf linguist-language=Markdown
 
 # Ensure all markdown files are treated as text
 *.md text eol=lf
