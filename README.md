@@ -1,6 +1,6 @@
 # Terraform Schema Generator
 
-> A Go library for parsing Terraform configurations and generating JSON Schema Draft 7 specifications, enabling YAML-based infrastructure provisioning workflows.
+A Go library for parsing Terraform configurations and generating JSON Schema Draft 7 specifications, enabling YAML-based infrastructure provisioning workflows.
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
