@@ -10,34 +10,6 @@ A Go library for parsing Terraform configurations and generating JSON Schema Dra
 [![Coverage](https://img.shields.io/badge/coverage-73.2%25-brightgreen?style=flat&logo=codecov)](pkg/)
 [![Go Report Card](https://img.shields.io/badge/go%20report-A+-brightgreen?style=flat&logo=go)](https://goreportcard.com)
 
-## Test & Quality Metrics
-
-<div align="center">
-
-| Package | Tests | Coverage | Status |
-|---------|-------|----------|--------|
-| **CLI** | 21 | ![87.3%](https://img.shields.io/badge/87.3%25-brightgreen?style=flat-square) | ✅ |
-| **Parser** | 33 | ![63.3%](https://img.shields.io/badge/63.3%25-yellow?style=flat-square) | ✅ |
-| **Converter** | 50 | ![78.7%](https://img.shields.io/badge/78.7%25-green?style=flat-square) | ✅ |
-| **Generator** | 14 | ![73.6%](https://img.shields.io/badge/73.6%25-yellowgreen?style=flat-square) | ✅ |
-| **Validator** | 13 | ![43.9%](https://img.shields.io/badge/43.9%25-orange?style=flat-square) | ✅ |
-| **Integration** | 66 | ![N/A]() | ✅ |
-| **Total** | **197** | ![73.2%](https://img.shields.io/badge/73.2%25-brightgreen?style=flat-square) | ✅ |
-
-</div>
-
-### Quick Stats
-
-```
-Total Tests:        197 (all passing ✅)
-Total Packages:     6
-Code Coverage:      73.2% average
-Lines of Code:      ~3,500
-Test-to-Code Ratio: 1:1.2
-Build Time:         ~2.5s
-Test Time:          ~3.2s
-```
-
 ## Overview
 
 This library transforms Terraform module variables into JSON Schema Draft 7 documents, enabling platform builders to create YAML-based abstractions over Terraform infrastructure. Perfect for internal developer platforms (IDPs), self-service portals, and GitOps workflows.
@@ -880,6 +852,39 @@ Suitable for real-time API validation and CI/CD pipelines.
 - [ ] Module composition support
 - [ ] Web UI for schema exploration
 - [ ] VS Code extension for YAML validation
+
+## Test Coverage & Quality Metrics
+
+<details>
+<summary><b>📊 Detailed Test Metrics</b> (click to expand)</summary>
+
+<br>
+
+### Package Coverage
+
+| Package | Tests | Coverage | Status |
+|---------|-------|----------|--------|
+| **CLI** | 21 | 87.3% | ✅ |
+| **Parser** | 33 | 63.3% | ✅ |
+| **Converter** | 50 | 78.7% | ✅ |
+| **Generator** | 14 | 73.6% | ✅ |
+| **Validator** | 13 | 43.9% | ✅ |
+| **Integration** | 66 | N/A | ✅ |
+| **Total** | **197** | **73.2%** | ✅ |
+
+### Quick Stats
+
+```
+Total Tests:        197 (all passing)
+Total Packages:     6
+Code Coverage:      73.2% average
+Lines of Code:      ~3,500
+Test-to-Code Ratio: 1:1.2
+Build Time:         ~2.5s
+Test Time:          ~3.2s
+```
+
+</details>
 
 ## Contributing
 
