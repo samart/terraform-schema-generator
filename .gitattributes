@@ -1,0 +1,21 @@
+# Ensure README is treated as text, not binary
+README.md text eol=lf
+
+# Ensure all markdown files are treated as text
+*.md text eol=lf
+
+# Go source files
+*.go text eol=lf
+
+# Configuration files
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Makefiles
+Makefile text eol=lf
+*.mk text eol=lf
