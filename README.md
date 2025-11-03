@@ -301,6 +301,30 @@ Both validated against the same generated schema before deployment.
 
 ## Architecture
 
+```
+┌─────────────────────┐
+│  Terraform Module   │
+│   (variables.tf)    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Parser Package    │
+│  (HCL → Structs)    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Converter Package   │
+│ (Structs → Schema)  │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  JSON Schema Draft  │
+│         7           │
+└─────────────────────┘
+```
 
 ## Features
 
@@ -736,7 +760,17 @@ err := metaValidator.ValidateAgainstMetaSchema(schemaJSON)
 
 ### Step 2: Store Schemas
 
-
+```
+schemas/
+├── aws-eks/
+│   └── schema.json
+├── aws-rds/
+│   └── schema.json
+├── aws-vpc/
+│   └── schema.json
+└── gcp-gke/
+    └── schema.json
+```
 
 ### Step 3: Build Platform Interface
 
