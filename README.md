@@ -21,7 +21,7 @@ A Go library for parsing Terraform configurations and generating JSON Schema Dra
 | **Converter** | 50 | ![78.7%](https://img.shields.io/badge/78.7%25-green?style=flat-square) | ✅ |
 | **Generator** | 14 | ![73.6%](https://img.shields.io/badge/73.6%25-yellowgreen?style=flat-square) | ✅ |
 | **Validator** | 13 | ![43.9%](https://img.shields.io/badge/43.9%25-orange?style=flat-square) | ✅ |
-| **Integration** | 66 | ![N/A](https://img.shields.io/badge/N%2FA-lightgrey?style=flat-square) | ✅ |
+| **Integration** | 66 | ![N/A]() | ✅ |
 | **Total** | **197** | ![73.2%](https://img.shields.io/badge/73.2%25-brightgreen?style=flat-square) | ✅ |
 
 </div>
